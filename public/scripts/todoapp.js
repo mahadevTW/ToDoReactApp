@@ -1,9 +1,18 @@
 var ToDoApp = React.createClass({
     render: function () {
         return (
-            <div>
-                Hi
-            </div>
+            <ToDoInput/>
+        )
+    }
+});
+
+var ToDoInput = React.createClass({
+    render: function () {
+        return (
+            <form className="commentForm">
+                <input type="text" placeholder="ToDo"/>
+                <input type="submit" value="Post"/>
+            </form>
         )
     }
 });
