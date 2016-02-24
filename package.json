@@ -1,0 +1,15 @@
+{
+  "name": "ToDoApp",
+  "version": "0.1.0",
+  "author": "Tina Maria",
+  "description": "Totally absolutely beyond awesome ToDoApp",
+  "license": "All Rights Reserved",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-html-replace": "^1.5.5",
+    "gulp-react": "^3.1.0",
+    "gulp-uglify": "^1.5.3"
+  }
+}
