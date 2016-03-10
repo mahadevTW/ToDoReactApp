@@ -1,5 +1,5 @@
 var Reflux = require('reflux');
-var ToDoStore= require('./Todostore');
+var ToDoStore= require('./../todostore');
 
 const listener = Reflux.ListenerMixin;
 
