@@ -1,5 +1,5 @@
 
-var ToDoAppComp = require('./ToDoAppComp');
+var ToDoAppComp = require('./components/ToDoAppComp');
 
 
 var Main = React.createClass({

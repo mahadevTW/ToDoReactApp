@@ -1,13 +1,13 @@
 var Reflux = require('reflux');
-var ToDoStore= require('./Todostore');
+var ToDoStore= require('./../stores/todostore');
 
 const listener = Reflux.ListenerMixin;
 
 var TextDisplay = React.createClass({
     getInitialState: function () {
-        return {text: 'empty'};
+        return ({text: "empty"});
     },
-    componentDidMount(){
+    componentDidMount: function(){
         listener.listenTo(ToDoStore, this.onUpdateList);
     },
     onUpdateList: function (result) {

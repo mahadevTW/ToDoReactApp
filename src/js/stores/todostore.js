@@ -1,5 +1,5 @@
 var Reflux = require('reflux');
-var ToDoActions = require('./Todoactions');
+var ToDoActions = require('./../actions/Todoactions');
 
 const ToDoStore = Reflux.createStore({
     listenables: [ToDoActions],
