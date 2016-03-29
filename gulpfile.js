@@ -4,25 +4,28 @@ var uglify = require('gulp-uglify');
 var reactify = require('reactify');
 var browserify = require('browserify');
 var streamify = require('gulp-streamify');
+var mocha = require('gulp-mocha');
+var babelify = require("babelify");
+var babel = require("gulp-babel");
 
 var source = require('vinyl-source-stream');
 
 
 var path = {
-    HTML: 'src/index.html',
-    ALL: ['public/scripts/*.js', 'src/index.html'],
-    JS: ['public/scripts/*.js'],
+    HTML: 'app/index.html',
+    JS: ['app/js/src/*.js'],
     MINIFIED_OUT: 'build.min.js',
-    DEST_SRC: 'out/src',
     DEST_PUBLIC: 'out/build/public',
-    DEST_BUILD: 'out/build'
+    DEST_BUILD: 'out/build',
+    TEST_SRC: 'app/js/tests/*.js',
+    JS_TESTDESTPATH:'out/build/js-temp'
 };
 
 
 
 gulp.task('transform', function(){
     browserify({
-        entries: ["src/js/todoapp.js"],
+        entries: ["app/js/src/todoapp.js"],
         transform: [reactify]
     })
         .bundle()
@@ -34,6 +37,14 @@ gulp.task('transform', function(){
 gulp.task('copy', function () {
     gulp.src(path.HTML)
         .pipe(gulp.dest(path.DEST_BUILD));
+});
+
+gulp.task('test-compile', function(){
+    gulp.src(path.TEST_SRC)
+        .pipe(babel())
+        .pipe(gulp.dest(path.JS_TESTDESTPATH))
+        .pipe(mocha({}));
+
 });
 
 gulp.task('build', ['transform', 'copy']);
