@@ -5,7 +5,8 @@ var ToDoAppComp = require('./components/ToDoAppComp');
 var Main = React.createClass({
     render: function () {
         return (
-            <ToDoAppComp></ToDoAppComp>
+        	<ToDoAppComp></ToDoAppComp>
+            
         )
     }
 });
