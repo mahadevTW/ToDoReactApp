@@ -1,3 +1,4 @@
+var React = require('react');
 var Reflux = require('reflux');
 var TextDisplay= require('./TextDisplay');
 var ToDoInput= require('./ToDoInput');

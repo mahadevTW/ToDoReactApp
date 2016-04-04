@@ -1,3 +1,4 @@
+var React = require('react');
 var TextDisplay = React.createClass({
     render: function () {
         return (

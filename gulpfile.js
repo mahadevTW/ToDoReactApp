@@ -7,6 +7,7 @@ var streamify = require('gulp-streamify');
 var mocha = require('gulp-mocha');
 var babelify = require("babelify");
 var babel = require("gulp-babel");
+var es2015 = require('babel-preset-es2015');
 
 var source = require('vinyl-source-stream');
 
@@ -17,8 +18,8 @@ var path = {
     MINIFIED_OUT: 'build.min.js',
     DEST_PUBLIC: 'out/build/public',
     DEST_BUILD: 'out/build',
-    TEST_SRC: 'app/js/tests/*.js',
-    JS_TESTDESTPATH:'out/build/js-temp'
+    TEST_SRC: 'app/js/**/*.js',
+    JS_TESTDESTPATH:'out/js-temp'
 };
 
 
@@ -30,7 +31,6 @@ gulp.task('transform', function(){
     })
         .bundle()
         .pipe(source(path.MINIFIED_OUT))
-        //.pipe(streamify(uglify(path.MINIFIED_OUT)))
         .pipe(gulp.dest(path.DEST_PUBLIC));
 });
 
@@ -41,11 +41,23 @@ gulp.task('copy', function () {
 
 gulp.task('test-compile', function(){
     gulp.src(path.TEST_SRC)
-        .pipe(babel())
-        .pipe(gulp.dest(path.JS_TESTDESTPATH))
-        .pipe(mocha({}));
-
+    .pipe(babel({ presets: ['react', 'es2015']}))
+    .pipe(gulp.dest(path.JS_TESTDESTPATH))
+    .pipe(mocha({}));
+    
+    // gulp.src('./app/js/test/*.js', { read: false })
+    // .pipe(mocha({}));
 });
+    // gulp.src(path.TEST_SRC, {
+    //   dest: path.JS_TESTDESTPATH
+    // })
+    // .pipe(babel());
+
+    // gulp.src(path.TEST_SRC)
+        // .pipe(babel())
+        // .pipe(gulp.dest(path.JS_TESTDESTPATH));
+        //.pipe(mocha({}));
+
 
 gulp.task('build', ['transform', 'copy']);
 
