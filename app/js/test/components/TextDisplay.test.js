@@ -1,17 +1,20 @@
 var assert = require('assert');
 var React = require('react');
 var Reflux = require('reflux');
-var ToDoStore= require('../../../src/js/stores/todostore');
 var ReactTestUtils = require("react-addons-test-utils");
-var TextDisplay = require("../../../src/js/components/TextDisplay");
-
-describe('TextDisplay', function() {
+var TextDisplay = require("./../../src/components/TextDisplay")
+var JsDom = require("./../utils/jsdom");
+describe('Text Display', function() {
         it('should display Text', function () {
-                var component = ReactTestUtils.renderIntoDocument(<TextDisplay></TextDisplay>);
-                var textDisplay = ReactTestUtils.findRenderedDOMComponentWithTag(
-                    component,
-                    'div'
-                        );
-                assert(textDisplay.getDOMNode().getAttribute('innerHTML'),"Hello");
+
+                var component = ReactTestUtils.renderIntoDocument(<TextDisplay text="eher"/>);
+                // var textDisplay = ReactTestUtils.findRenderedDOMComponentWithTag(
+                //     component,
+                //     'div'
+                //         );
+
+                // // var textDisplayComponent = ReactDOM
+
+                // assert(textDisplay.textContent,"Helsdffasdflo");
         });
 });
