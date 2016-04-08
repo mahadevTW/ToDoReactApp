@@ -43,21 +43,24 @@ gulp.task('copy', function () {
 
 
 
-gulp.task('test-compile', function(){
-
-    gulp.src(path.JS_TEST_FILES)
-    .pipe(clean());
-
+gulp.task('compile-test-js', function(){
     gulp.src(path.TEST_SRC)
     .pipe(babel({ presets: ['react', 'es2015']}))
     .pipe(gulp.dest(path.JS_TESTDESTPATH));
-
-    gulp.src(path.JS_TEST_FILES)
-    .pipe(mocha({}));
-    
 });
 
+gulp.task('clean', function(){
+    gulp.src(path.JS_TEST_FILES)
+        .pipe(clean());
+});
+
+gulp.task('run-test', function(){
+    gulp.src(path.JS_TEST_FILES)
+        .pipe(mocha({}));
+});
 
 gulp.task('build', ['transform', 'copy']);
+
+gulp.task('test', ['clean', 'compile-test-js', 'run-test']);
 
 gulp.task('default', ['build']);
