@@ -8,6 +8,8 @@ var mocha = require('gulp-mocha');
 var babelify = require("babelify");
 var babel = require("gulp-babel");
 var es2015 = require('babel-preset-es2015');
+var gutil = require('gulp-util');
+
 const del = require('del');
 
 var source = require('vinyl-source-stream');
@@ -34,8 +36,8 @@ gulp.task('transform', function(){
 });
 
 gulp.task("clean", function(){
-    return
-    del(['out/js-temp']);
+    return del(['out/js-temp']);
+    
 }) 
 
 gulp.task('copy', function () {
@@ -44,18 +46,19 @@ gulp.task('copy', function () {
 });
 
 gulp.task('compile-test-js', ['clean'], function(){
-    return
-    gulp.src(path.TEST_SRC)
+    return gulp.src(path.TEST_SRC)
     .pipe(babel({ presets: ['react', 'es2015']}))
     .pipe(gulp.dest(path.JS_TESTDESTPATH));
+    
 });
 
 
-gulp.task('test',['compile-test-js'],function(){
+gulp.task('test',['clean','compile-test-js'],function(){
     gulp.src(path.JS_TEST_FILES)
         .pipe(mocha({}));
 });
 
 gulp.task('build', ['transform', 'copy']);
+
 
 gulp.task('default', ['build']);
