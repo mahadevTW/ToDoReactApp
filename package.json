@@ -23,6 +23,7 @@
     "react-addons-test-utils": "^0.14.7",
     "reactify": "^1.1.1",
     "reflux": "^0.3.0",
+    "sinon": "^1.17.3",
     "vinyl-source-stream": "^1.1.0"
   }
 }
