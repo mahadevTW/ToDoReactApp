@@ -1,6 +1,6 @@
 var expect = require('chai').expect;
-var ToDoStore = require("../src/stores/todostore");
-var ToDoActions = require("../src/actions/todoactions");
+var ToDoStore = require("../../src/stores/todostore");
+var ToDoActions = require("../../src/actions/todoactions");
 var sinon = require("sinon");
 
 describe("ToDoStore", function(){
