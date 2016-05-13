@@ -1,18 +1,17 @@
 var chai = require('chai');
 var React = require('react');
 var ReactTestUtils = require("react-addons-test-utils");
-var TextDisplay = require("./../../src/components/TextDisplay")
+var ToDoElement = require("./../../src/components/ToDoElement");
 var JsDom = require("./../utils/jsdom");
 describe('Text Display', function() {
         it('should display Text', function () {
 
-                var component = ReactTestUtils.renderIntoDocument(<TextDisplay text="Text Here"/>);
-                var textDisplay = ReactTestUtils.findRenderedDOMComponentWithTag(
+                var component = ReactTestUtils.renderIntoDocument(<ToDoElement text="Text Here"/>);
+                var toDoElement = ReactTestUtils.findRenderedDOMComponentWithTag(
                     component,
                     'div'
                         );
-
-                chai.expect(textDisplay.innerHTML).to.eq("Text Here");
+                chai.expect(toDoElement.innerHTML).to.eq("Text Here");
 
         });
 });

@@ -11,10 +11,10 @@ describe('ToDoComp', function() {
             let renderer = ReactTestUtils.createRenderer();
             renderer.render(<ToDoComponent />);
             let component = renderer.getRenderOutput();
-            expect(component.props.children[0].type.displayName).to.equal('TextDisplay');
+            expect(component.props.children[0].type.displayName).to.equal('ToDoElement');
             expect(component.props.children[1].type.displayName).to.equal('ToDoInput');
         });   
-        it.only('should update List when notified', function(){
+        it('should update List when notified', function(){
             var component = ReactTestUtils.renderIntoDocument(<ToDoComponent/>);
             let data={
                 text:"Hello"

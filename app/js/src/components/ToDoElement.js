@@ -1,5 +1,5 @@
 var React = require('react');
-var TextDisplay = React.createClass({
+var ToDoElement = React.createClass({
     render: function () {
         return (
             <div>{this.props.text}</div>
@@ -7,4 +7,4 @@ var TextDisplay = React.createClass({
     }
 });
 
-module.exports = TextDisplay;
+module.exports = ToDoElement;

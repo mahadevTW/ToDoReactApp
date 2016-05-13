@@ -1,6 +1,6 @@
 var React = require('react');
 var Reflux = require('reflux');
-var TextDisplay= require('./TextDisplay');
+var ToDoElement= require('./ToDoElement');
 var ToDoInput= require('./ToDoInput');
 var ToDoStore= require('./../stores/todostore');
 
@@ -22,7 +22,7 @@ var ToDoApp = React.createClass({
     render: function () {
         return (
             <div>
-                <TextDisplay text={this.state.text}/>
+                <ToDoElement text={this.state.text}/>
                 <ToDoInput/>
             </div>
         )
