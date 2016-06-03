@@ -5,19 +5,19 @@ var ToDoInput= require('./ToDoInput');
 var ToDoStore= require('./../stores/todostore');
 
 const listener = Reflux.ListenerMixin;
-let list =[];
 var ToDoApp = React.createClass({
     
     getInitialState: function () {
         return ({todoelements: []});
     },
     componentDidMount: function(){
+        this.list=[];
         listener.listenTo(ToDoStore, this.onUpdateList);
     },
     onUpdateList: function (result) {
-        list.unshift(result.text);
+        this.list.unshift(result.text);
         this.setState({
-            todoelements : list
+            todoelements : this.list
         });
     },
     render: function () {
