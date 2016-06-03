@@ -16,6 +16,7 @@ var source = require('vinyl-source-stream');
 
 var path = {
     HTML: 'app/index.html',
+    CSS:'app/stylesheet/main.css',
     JS: ['app/js/src/*.js'],
     MINIFIED_OUT: 'build.min.js',
     DEST_PUBLIC: 'out/build/public',
@@ -40,8 +41,13 @@ gulp.task("clean", function(){
     
 }) 
 
-gulp.task('copy', function () {
+gulp.task('copyHTML', function () {
     gulp.src(path.HTML)
+        .pipe(gulp.dest(path.DEST_BUILD));
+});
+
+gulp.task('copyCSS', function () {
+    gulp.src(path.CSS)
         .pipe(gulp.dest(path.DEST_BUILD));
 });
 
@@ -58,7 +64,7 @@ gulp.task('test',['clean','compile-test-js'],function(){
         .pipe(mocha({}));
 });
 
-gulp.task('build', ['transform', 'copy']);
+gulp.task('build', ['transform', 'copyHTML','copyCSS']);
 
 
 gulp.task('default', ['build']);

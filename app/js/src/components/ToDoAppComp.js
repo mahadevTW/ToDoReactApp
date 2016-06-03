@@ -22,7 +22,7 @@ var ToDoApp = React.createClass({
     },
     render: function () {
         return (
-            <div>
+            <div className="main-container">
                 <ToDoInput/>
                 <ToDoList todoelements={this.state.todoelements}/>
             </div>
