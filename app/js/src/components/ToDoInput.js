@@ -13,12 +13,15 @@ var ToDoInput = React.createClass({
     handleSubmit: function (e) {
         e.preventDefault();
         ToDoActions.updateList(this.state.text);
+        this.setState({
+            text:'',
+        })
     },
     render: function () {
         return (
             <form className="commentForm" onSubmit={this.handleSubmit}>
-                <input type="text" value={this.state.value} placeholder="ToDo" onChange={this.handleChange}/>
-                <input type="submit" value="Post" hidden/>
+                <input type="text" value={this.state.text} placeholder="ToDo" onChange={this.handleChange}/>
+                <input ref="buttonClick" type="submit" value="Post" hidden/>
             </form>
         )
     }
