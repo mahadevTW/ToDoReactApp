@@ -1,7 +1,7 @@
 var Reflux = require('reflux');
 var ToDoActions = require('./../actions/Todoactions');
 
-const ToDoStore = Reflux.createStore({
+var ToDoStore = Reflux.createStore({
     listenables: [ToDoActions],
 
     onUpdateList: function(payload){
@@ -11,7 +11,6 @@ const ToDoStore = Reflux.createStore({
 
         })
     }
-
 });
 
 module.exports = ToDoStore;

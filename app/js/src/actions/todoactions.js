@@ -1,6 +1,5 @@
 var Reflux = require('reflux');
-
-const ToDoActions = Reflux.createActions([
+var ToDoActions = Reflux.createActions([
    "updateList"
 ]);
 
