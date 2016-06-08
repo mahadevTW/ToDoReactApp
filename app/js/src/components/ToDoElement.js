@@ -2,7 +2,7 @@ var React = require('react');
 var ToDoElement = React.createClass({
     render: function () {
         return (
-            <div>{this.props.text}</div>
+            <div className='textElementStyle'>{this.props.text}</div>
         )
     }
 });

@@ -20,7 +20,7 @@ var ToDoInput = React.createClass({
     render: function () {
         return (
             <form className="commentForm" onSubmit={this.handleSubmit}>
-                <input type="text" value={this.state.text} placeholder="ToDo" onChange={this.handleChange}/>
+                <input className='textElementStyle' type="text" value={this.state.text} placeholder="ToDo" onChange={this.handleChange}/>
                 <input ref="buttonClick" type="submit" value="Post" hidden/>
             </form>
         )
