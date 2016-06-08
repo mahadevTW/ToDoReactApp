@@ -8,11 +8,12 @@ var JsDom = require("../utils/jsdom");
 var ToDoActions = require("./../../src/actions/todoactions");
 var ToDoStore = require("./../../src/stores/todostore");
 describe('ToDoInput', function() {
-        var component,newText;
+        var component,newText,event;
 
         before(function(){
                 component = ReactTestUtils.renderIntoDocument(<ToDoInput/>);
                 newText= "New ToDo Item";
+                event = { preventDefault: () => {}};
         }),
         
         it('should trigger action on Form Submit', function (done) {
@@ -31,10 +32,16 @@ describe('ToDoInput', function() {
                 'form'
                 );
         component.state.text=newText;
-        let event = { preventDefault: () => {}};
         
         component.handleSubmit(event)
         expect(inputBox.props.onSubmit.name).to.equal("bound handleSubmit");      
         });
         
+        it('should clear text on enter', function () {
+                component.state.text=newText;
+
+                component.handleSubmit(event);
+
+                expect(component.state.text).to.equal('');
+        })
 });
