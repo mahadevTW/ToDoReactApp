@@ -1,0 +1,4 @@
+development:
+    driver: postgres
+    open: user=tinamt dbname=todoApp sslmode=disable
+
