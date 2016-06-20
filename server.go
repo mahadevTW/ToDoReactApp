@@ -1,19 +1,21 @@
 package main
 
-
-import(
-	"net/http"
+import (
 	"log"
+	"net/http"
 	"os"
+
+	"github.com/gorilla/mux"
 )
 
-
 func main() {
+	r := mux.NewRouter()
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "3000"
 	}
-	http.Handle("/", http.FileServer(http.Dir("./out/build/")))
+	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./out/build/")))
 	log.Println("Server started: http://localhost:" + port)
+	http.Handle("/", r)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
