@@ -7,3 +7,5 @@ build:
 
 db_migrate:
 	goose up
+test:
+	go test ./handlers
