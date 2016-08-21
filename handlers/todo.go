@@ -13,9 +13,9 @@ func MeAliveMethod(w http.ResponseWriter, r *http.Request) {
 	w.Write(byteContents)
 }
 
-func AddToDo(db *sql.DB) http.HandlerFunc {
+func AddToDo(value string, db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		models.ToDoInsert("Hello", db)
+		models.ToDoInsert(value, db)
 		w.Write([]byte("Success"))
 	}
 }
