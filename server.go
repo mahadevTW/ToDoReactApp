@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"log"
 	"net/http"
 	"os"
@@ -16,7 +17,13 @@ func main() {
 	if port == "" {
 		port = "3000"
 	}
+
+	db, err := sql.Open("postgres", "user=todo_user password=todo dbname=todoApp sslmode=disableed")
+	if err != nil {
+	}
+	ToDoHandler := handlers.AddToDo(db)
 	r.HandleFunc("/alive", handlers.MeAliveMethod)
+	r.HandleFunc("/todo", ToDoHandler).Methods("POST")
 	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./out/build/")))
 	log.Println("Server started: http://localhost:" + port)
 	http.Handle("/", r)
