@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"bytes"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -18,12 +19,14 @@ func TestSuccessfulResponseFromStatusCheckHandler(t *testing.T) {
 }
 
 func TestInsertToDoElement(t *testing.T) {
+	const requestData = `{"Item": "hello"}`
+
 	mock := utils.GenerateMock()
 	mock.ExpectInsertToDoItem("hello")
 
-	r, _ := http.NewRequest("GET", "", nil)
+	r, _ := http.NewRequest("GET", "", bytes.NewBufferString(requestData))
 	w := httptest.NewRecorder()
-	handler := AddToDo("hello", mock.DB())
+	handler := AddToDo(mock.DB())
 	handler(w, r)
 
 	response := w.Body.Bytes()
