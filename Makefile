@@ -10,3 +10,4 @@ db_migrate:
 test:
 	go test ./handlers
 	go test ./models
+	go test ./db_test
