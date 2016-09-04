@@ -9,6 +9,7 @@ import (
 	"github.com/gorilla/mux"
 
 	"git.todo-app.com/ToDoReactApp/handlers"
+	_ "github.com/lib/pq"
 )
 
 func main() {
@@ -18,7 +19,8 @@ func main() {
 		port = "3000"
 	}
 
-	db, err := sql.Open("postgres", "user=todo_user password=todo dbname=todoApp sslmode=disableed")
+	db, err := sql.Open("postgres", "user=todo_user password=todo dbname=todo_app sslmode=disable")
+	defer db.Close()
 	if err != nil {
 	}
 	ToDoHandler := handlers.AddToDo(db)
