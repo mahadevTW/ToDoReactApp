@@ -2,6 +2,7 @@ var expect = require('chai').expect;
 var ToDoStore = require("../../src/stores/todostore");
 var ToDoActions = require("../../src/actions/todoactions");
 var sinon = require("sinon");
+var nock = require('nock');
 
 describe("ToDoStore", function(){
   it("is configured to listen to ToDoActions", function(){
@@ -20,4 +21,16 @@ describe("ToDoStore", function(){
     })
     ToDoStore.onUpdateList("hello");
   })
+
+  it("fetches the list of todos", function(done){
+    nock('/todos')
+        .get()
+        .reply(200,"[{Item:'Hello'}]")
+    ToDoStore.onFetchList();
+    sinon.stub(ToDoStore,"trigger",function(){
+      ToDoStore.trigger.restore();
+      nock.restore();
+      done();
+    });
+  });
 }); 
