@@ -23,6 +23,7 @@ func main() {
 	}
 	ToDoHandler := handlers.AddToDo(db)
 	r.HandleFunc("/alive", handlers.MeAliveMethod)
+	r.HandleFunc("/todos", handlers.SelectToDos(db)).Methods("GET")
 	r.HandleFunc("/todo", ToDoHandler).Methods("POST")
 	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./out/build/")))
 	log.Println("Server started: http://localhost:" + port)
