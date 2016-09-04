@@ -7,8 +7,10 @@ import (
 )
 
 type ToDo struct {
-	item string
+	Item string `json:"Item"`
 }
+
+
 
 const(
 	InsertQuery=`INSERT INTO to_do_list VALUES (nextval('todo_sequence'),$1)`
@@ -18,7 +20,7 @@ const(
 func ToDoInsert(value string, db *sql.DB) {
 	query := InsertQuery
 	_,err := db.Exec(query, value)
-	fmt.Print("ERR = %3V",err)
+	fmt.Print("ERR = %#V",err)
 }
 
 func ToDoSelectAll(db *sql.DB) []ToDo {
@@ -39,7 +41,7 @@ func ToDoSelectAll(db *sql.DB) []ToDo {
 			fmt.Print("Skipping this row")
 		}
 		resultSet = append(resultSet, ToDo{
-			item: todoElement,
+			Item: todoElement,
 		})
 	}
 	return resultSet

@@ -7,10 +7,11 @@ import (
 	"net/http"
 
 	"git.todo-app.com/ToDoReactApp/models"
+	"fmt"
 )
 
 type ToDoJSON struct {
-	Item string `json:"Item"`
+	Item string
 }
 
 func MeAliveMethod(w http.ResponseWriter, r *http.Request) {
@@ -34,5 +35,19 @@ func AddToDo(db *sql.DB) http.HandlerFunc {
 		}
 		models.ToDoInsert(requestBody.Item, db)
 		w.Write([]byte("Success"))
+	}
+}
+
+
+func SelectToDos(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		todos := models.ToDoSelectAll(db)
+		todosJSON,err := json.Marshal(todos)
+		if err != nil{
+			fmt.Print("Error in json marshalling")
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte(todosJSON))
 	}
 }
