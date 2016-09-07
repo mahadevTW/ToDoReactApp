@@ -12,13 +12,26 @@ var ToDoApp = React.createClass({
     },
     componentDidMount: function(){
         this.list=[];
+        ToDoStore.onFetchList();
         listener.listenTo(ToDoStore, this.onUpdateList);
+        listener.listenTo(ToDoStore, this.onFetchList);
     },
     onUpdateList: function (result) {
-        this.list.unshift(result.text);
-        this.setState({
-            todoelements : this.list
-        });
+        if(result.action == "triggered") {
+            this.list.unshift(result.text);
+            this.setState({
+                todoelements: this.list
+            });
+        }
+    },
+    onFetchList: function (result) {
+        if(result.action == "fetch") {
+            let todosFlattened = result.data.body.map(x=>x.Item)
+            this.list = this.list.concat(todosFlattened)
+            this.setState({
+                todoelements: this.list
+            });
+        }
     },
     render: function () {
         return (

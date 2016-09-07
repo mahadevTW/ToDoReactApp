@@ -6,6 +6,7 @@ var win = doc.defaultView
 
 global.document = doc
 global.window = win
+global.navigator = global.window.navigator
 
 propagateToGlobal(win)
 

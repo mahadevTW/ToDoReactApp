@@ -23,9 +23,9 @@ describe("ToDoStore", function(){
   })
 
   it("fetches the list of todos", function(done){
-    nock('/todos')
-        .get()
-        .reply(200,"[{Item:'Hello'}]")
+    nock('http://localhost/')
+        .get('/todos')
+        .reply(200,{Item:'Hello'})
     ToDoStore.onFetchList();
     sinon.stub(ToDoStore,"trigger",function(){
       ToDoStore.trigger.restore();
