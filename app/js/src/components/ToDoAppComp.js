@@ -18,7 +18,7 @@ var ToDoApp = React.createClass({
     },
     onUpdateList: function (result) {
         if(result.action == "triggered") {
-            this.list.unshift(result.text);
+            this.list.unshift(result.data);
             this.setState({
                 todoelements: this.list
             });

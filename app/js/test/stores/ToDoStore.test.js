@@ -12,7 +12,7 @@ describe("ToDoStore", function(){
   it("raises triggers a change", function(done){
     let expectedResult = {
       action:"triggered",
-      text: "hello"
+      data: "hello"
     };
     sinon.stub(ToDoStore,"trigger",function(data){
       expect(data).to.deep.equal(expectedResult);

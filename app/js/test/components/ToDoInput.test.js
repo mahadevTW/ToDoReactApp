@@ -21,7 +21,7 @@ describe('ToDoInput', function() {
         sinon.stub(ToDoStore,"trigger",function(data){
                 let expectedTriggerData = {
                         action:"triggered",
-                        text:newText
+                        data:newText
                 }
                 expect(data).to.deep.equal(expectedTriggerData);
                 ToDoStore.trigger.restore();
