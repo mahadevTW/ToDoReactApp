@@ -6,7 +6,12 @@ var ToDoStore = Reflux.createStore({
     listenables: [ToDoActions],
 
     onUpdateList: function(payload){
-        ToDoStore.publish("triggered",payload);
+        request
+            .post('/todo')
+            .send({"Item":payload})
+            .end(function(err,res){
+                ToDoStore.publish("triggered",payload);
+            })
     },
     onFetchList: function(){
         request

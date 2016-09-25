@@ -17,36 +17,30 @@ describe('ToDoComp', function() {
         });
 
         it('should fetch ToDos', function (done) {
-            nock('http://localhost/')
+            let scope = nock('http://localhost/')
                 .get('/todos')
                 .reply(200,[
                     {Item:'item1'},
                     {Item:'item2'},
                 ])
 
-            var component = ReactTestUtils.renderIntoDocument(<ToDoComponent/>);
-
-            nock.restore();
-
-
+            var component = ReactTestUtils.renderIntoDocument(<ToDoComponent/>);            
             setTimeout(function(){
                 var comps = ReactTestUtils.scryRenderedDOMComponentsWithClass(component,'textElementStyle');
-
+                
                 expect(comps.length).to.be.equal(3)
-
-
-            }, 200);
                 done();
+            }, 200);
         });
 
         xit('should update List when notified', function(){
             var component = ReactTestUtils.renderIntoDocument(<ToDoComponent/>);
             let data={
-                text:"Hello",
+                data:"Hello",
                 action:"triggered"
             }
             ToDoStore.onUpdateList("Hello");
             expect(component.state.text).to.be.equal("Hello");
-                                                             
+
         })
 });

@@ -9,13 +9,20 @@ describe("ToDoStore", function(){
     //expect(ToDoStore.listenables).to.include(ToDoActions);
     expect(ToDoActions.updateList).to.be.a("function");
   });
-  it("raises triggers a change", function(done){
+  it("inserts a new todo item", function(done){
     let expectedResult = {
       action:"triggered",
       data: "hello"
     };
+    nock('http://localhost/')
+      .post('/todo',{
+        "Item": "hello"
+      })
+      .reply(200,{"Response":"Succes"})
+
     sinon.stub(ToDoStore,"trigger",function(data){
       expect(data).to.deep.equal(expectedResult);
+      expect(nock.isDone()).to.equal(true);
       ToDoStore.trigger.restore();
       done();
     })
@@ -29,8 +36,7 @@ describe("ToDoStore", function(){
     ToDoStore.onFetchList();
     sinon.stub(ToDoStore,"trigger",function(){
       ToDoStore.trigger.restore();
-      nock.restore();
       done();
     });
   });
-}); 
+});
