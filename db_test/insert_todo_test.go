@@ -12,9 +12,11 @@ func TestInsertToDo(t *testing.T) {
 
 	testDB := utils.OpenTestDB()
 	defer testDB.Close()
-	exisitingToDos, _ := models.ToDoSelectAll(testDB)
+	exisitingToDos, err := models.ToDoSelectAll(testDB)
+	assert.Nil(t, err, "Did not expect error while fetching todos")
 	models.ToDoInsert("hello", testDB)
-	currentToDos, _ := models.ToDoSelectAll(testDB)
+	currentToDos, err := models.ToDoSelectAll(testDB)
+	assert.Nil(t, err, "Did not expect error while fetching todos")
 	expectedCount := len(exisitingToDos) + 1
 	assert.Equal(t, expectedCount, len(currentToDos))
 

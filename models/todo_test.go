@@ -27,9 +27,10 @@ func TestSuccessfulSelectToDos(t *testing.T) {
 		{"item2"},
 	}
 	mock.ExpectSelect(expectedRows)
-	_, _ = models.ToDoSelectAll(mock.DB())
-
-	err := mock.VerifyExpectations()
+	todoList, err := models.ToDoSelectAll(mock.DB())
+	assert.NoError(t, err, "Queries were not called")
+	assert.Equal(t, 2, len(todoList), "Should have fetched two todo items")
+	err = mock.VerifyExpectations()
 	assert.NoError(t, err, "Queries were not called")
 }
 
