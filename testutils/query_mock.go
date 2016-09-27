@@ -40,7 +40,9 @@ func (m *Mock) ExpectSelect(expectedRows [][]driver.Value) {
 func (m *Mock) ExpectSelectFails(err error) {
 	m.mock.ExpectQuery(sanitize(models.SelectQuery)).WillReturnError(err)
 }
-
+func (m *Mock) ExpectExecFails(query string, err error) {
+	m.mock.ExpectExec(sanitize(query)).WillReturnError(err)
+}
 func (m *Mock) VerifyExpectations() error {
 	error := m.mock.ExpectationsWereMet()
 	if error != nil {

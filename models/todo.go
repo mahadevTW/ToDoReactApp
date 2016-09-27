@@ -14,10 +14,10 @@ const (
 	SelectQuery = `SELECT text FROM to_do_list`
 )
 
-func ToDoInsert(value string, db *sql.DB) {
+func ToDoInsert(value string, db *sql.DB) (err error) {
 	query := InsertQuery
-	_, err := db.Exec(query, value)
-	fmt.Print(err)
+	_, err = db.Exec(query, value)
+	return
 }
 
 func ToDoSelectAll(db *sql.DB) ([]ToDo, error) {

@@ -14,8 +14,22 @@ func TestSuccessfulInsertToDo(t *testing.T) {
 	todoItem := "Shopping"
 	mock := utils.GenerateMock()
 	mock.ExpectInsertToDoItem(todoItem)
-	models.ToDoInsert(todoItem, mock.DB())
-	err := mock.VerifyExpectations()
+	err := models.ToDoInsert(todoItem, mock.DB())
+	assert.NoError(t, err, "Unexpected Error thrown while trying to insert a new todo")
+	err = mock.VerifyExpectations()
+	assert.NoError(t, err, "Queries were not called")
+}
+
+func TestInsertToDoFails(t *testing.T) {
+	mock := utils.GenerateMock()
+	newToDoItem := "Flour"
+
+	mock.ExpectExecFails(models.InsertQuery, errors.New("bombed"))
+
+	err := models.ToDoInsert(newToDoItem, mock.DB())
+
+	assert.Equal(t, "bombed", err.Error(), "Unexpected Error thrown while trying to insert a new todo")
+	err = mock.VerifyExpectations()
 	assert.NoError(t, err, "Queries were not called")
 }
 
