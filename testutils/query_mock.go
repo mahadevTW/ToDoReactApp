@@ -43,6 +43,9 @@ func (m *Mock) ExpectSelectFails(err error) {
 func (m *Mock) ExpectExecFails(query string, err error) {
 	m.mock.ExpectExec(sanitize(query)).WillReturnError(err)
 }
+func (m *Mock) ExpectDeleteSuccess(id int) {
+	m.mock.ExpectExec(sanitize(models.DeleteQuery)).WillReturnResult(sqlmock.NewResult(1, 1))
+}
 func (m *Mock) VerifyExpectations() error {
 	error := m.mock.ExpectationsWereMet()
 	if error != nil {
