@@ -5,9 +5,11 @@ import (
 	"database/sql/driver"
 
 	"github.com/DATA-DOG/go-sqlmock"
-	"git.todo-app.com/ToDoReactApp/models"
-	"regexp"
+
 	"fmt"
+	"regexp"
+
+	"git.todo-app.com/ToDoReactApp/models"
 )
 
 type Mock struct {
@@ -34,6 +36,9 @@ func (m *Mock) ExpectSelect(expectedRows [][]driver.Value) {
 		rows.AddRow(value...)
 	}
 	m.mock.ExpectQuery(sanitize(models.SelectQuery)).WillReturnRows(rows)
+}
+func (m *Mock) ExpectSelectFails(err error) {
+	m.mock.ExpectQuery(sanitize(models.SelectQuery)).WillReturnError(err)
 }
 
 func (m *Mock) VerifyExpectations() error {

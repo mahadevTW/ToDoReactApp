@@ -6,8 +6,9 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"git.todo-app.com/ToDoReactApp/models"
 	"fmt"
+
+	"git.todo-app.com/ToDoReactApp/models"
 )
 
 type ToDoJSON struct {
@@ -38,12 +39,11 @@ func AddToDo(db *sql.DB) http.HandlerFunc {
 	}
 }
 
-
 func SelectToDos(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		todos := models.ToDoSelectAll(db)
-		todosJSON,err := json.Marshal(todos)
-		if err != nil{
+		todos, _ := models.ToDoSelectAll(db)
+		todosJSON, err := json.Marshal(todos)
+		if err != nil {
 			fmt.Print("Error in json marshalling")
 			return
 		}

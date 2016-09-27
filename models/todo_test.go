@@ -2,11 +2,12 @@ package models_test
 
 import (
 	"database/sql/driver"
+	"errors"
 	"testing"
 
+	"git.todo-app.com/ToDoReactApp/models"
 	utils "git.todo-app.com/ToDoReactApp/testutils"
 	"github.com/stretchr/testify/assert"
-	"git.todo-app.com/ToDoReactApp/models"
 )
 
 func TestSuccessfulInsertToDo(t *testing.T) {
@@ -26,8 +27,20 @@ func TestSuccessfulSelectToDos(t *testing.T) {
 		{"item2"},
 	}
 	mock.ExpectSelect(expectedRows)
-	_ = models.ToDoSelectAll(mock.DB())
+	_, _ = models.ToDoSelectAll(mock.DB())
 
 	err := mock.VerifyExpectations()
+	assert.NoError(t, err, "Queries were not called")
+}
+
+func TestSelectToDosFailure(t *testing.T) {
+	mock := utils.GenerateMock()
+
+	mock.ExpectSelectFails(errors.New("bombed"))
+	todos, err := models.ToDoSelectAll(mock.DB())
+	assert.NotNil(t, err, "Queries were not called")
+	assert.Nil(t, todos, "Returned ToDo list should have been empty")
+
+	err = mock.VerifyExpectations()
 	assert.NoError(t, err, "Queries were not called")
 }
