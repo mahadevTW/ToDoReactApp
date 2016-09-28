@@ -11,3 +11,4 @@ test:
 	go test ./handlers
 	go test ./models
 	go test ./db_test
+	go test ./repository

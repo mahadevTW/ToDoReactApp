@@ -4,12 +4,13 @@ import (
 	"database/sql"
 	"database/sql/driver"
 
+	"git.todo-app.com/ToDoReactApp/models"
+	repo "git.todo-app.com/ToDoReactApp/repository"
+
 	"github.com/DATA-DOG/go-sqlmock"
 
 	"fmt"
 	"regexp"
-
-	"git.todo-app.com/ToDoReactApp/models"
 )
 
 type Mock struct {
@@ -44,7 +45,7 @@ func (m *Mock) ExpectExecFails(query string, err error) {
 	m.mock.ExpectExec(sanitize(query)).WillReturnError(err)
 }
 func (m *Mock) ExpectDeleteSuccess(id int) {
-	m.mock.ExpectExec(sanitize(models.DeleteQuery)).WillReturnResult(sqlmock.NewResult(1, 1))
+	m.mock.ExpectExec(sanitize(repo.DeleteQuery)).WillReturnResult(sqlmock.NewResult(1, 1))
 }
 func (m *Mock) VerifyExpectations() error {
 	error := m.mock.ExpectationsWereMet()

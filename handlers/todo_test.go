@@ -2,15 +2,18 @@ package handlers
 
 import (
 	"bytes"
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
-	utils "git.todo-app.com/ToDoReactApp/testutils"
-	"github.com/stretchr/testify/assert"
 	"database/sql/driver"
 	"encoding/json"
+
 	"git.todo-app.com/ToDoReactApp/models"
+	utils "git.todo-app.com/ToDoReactApp/testutils"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestSuccessfulResponseFromStatusCheckHandler(t *testing.T) {
@@ -55,11 +58,40 @@ func TestSelectToDoElements(t *testing.T) {
 
 	response := w.Body.Bytes()
 	var todos []*models.ToDo
-	json.Unmarshal(response,&todos)
+	json.Unmarshal(response, &todos)
 
-	assert.Equal(t, models.ToDo{Item:"item1"}, *todos[0])
-	assert.Equal(t, models.ToDo{Item:"item2"}, *todos[1])
+	assert.Equal(t, models.ToDo{Item: "item1"}, *todos[0])
+	assert.Equal(t, models.ToDo{Item: "item2"}, *todos[1])
 
 	err := mock.VerifyExpectations()
 	assert.NoError(t, err, "Queries were not called")
+}
+
+func TestDeleteToDoSucess(t *testing.T) {
+	const requestData = `{"Id": 1}`
+	mock := utils.GenerateMock()
+	fakeTodoRepository := &utils.MockToDoRepository{}
+	fakeTodoRepository.On("Delete", mock.DB(), 1).Return(nil)
+
+	handler := DeleteToDoHandler(mock.DB(), fakeTodoRepository)
+	r, _ := http.NewRequest("DELETE", "", bytes.NewBufferString(requestData))
+	w := httptest.NewRecorder()
+	handler(w, r)
+
+	assert.Equal(t, http.StatusOK, w.Code)
+}
+
+func TestDeleteToDoFailure(t *testing.T) {
+	const requestData = `{"Id": 1}`
+	mock := utils.GenerateMock()
+	fakeTodoRepository := &utils.MockToDoRepository{}
+	fakeTodoRepository.On("Delete", mock.DB(), 1).Return(errors.New("Something went wrong"))
+
+	handler := DeleteToDoHandler(mock.DB(), fakeTodoRepository)
+	r, err := http.NewRequest("DELETE", "", bytes.NewBufferString(requestData))
+	require.NoError(t, err, "Expected no error")
+	w := httptest.NewRecorder()
+	handler(w, r)
+
+	assert.Equal(t, http.StatusInternalServerError, w.Code)
 }
