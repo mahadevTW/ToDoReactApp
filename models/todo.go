@@ -7,7 +7,7 @@ import (
 
 type ToDo struct {
 	Item string `json:"Item"`
-	Id   string `json:"Id"`
+	Id   int    `json:"Id"`
 }
 
 const (
@@ -40,6 +40,7 @@ func ToDoSelectAll(db *sql.DB) ([]ToDo, error) {
 		}
 		resultSet = append(resultSet, ToDo{
 			Item: todoElement,
+			Id:   todoId,
 		})
 	}
 	return resultSet, nil

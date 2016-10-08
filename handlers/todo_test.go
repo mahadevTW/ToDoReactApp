@@ -46,8 +46,8 @@ func TestSelectToDoElements(t *testing.T) {
 	mock := utils.GenerateMock()
 
 	expectedRows := [][]driver.Value{
-		{1, "item1"},
-		{2, "item2"},
+		{"1", "item1"},
+		{"2", "item2"},
 	}
 	mock.ExpectSelect(expectedRows)
 
@@ -60,8 +60,8 @@ func TestSelectToDoElements(t *testing.T) {
 	var todos []*models.ToDo
 	json.Unmarshal(response, &todos)
 
-	assert.Equal(t, models.ToDo{Item: "item1"}, *todos[0])
-	assert.Equal(t, models.ToDo{Item: "item2"}, *todos[1])
+	assert.Equal(t, models.ToDo{Item: "item1", Id: 1}, *todos[0])
+	assert.Equal(t, models.ToDo{Item: "item2", Id: 2}, *todos[1])
 
 	err := mock.VerifyExpectations()
 	assert.NoError(t, err, "Queries were not called")
