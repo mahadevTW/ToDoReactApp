@@ -37,8 +37,8 @@ func TestSuccessfulSelectToDos(t *testing.T) {
 	mock := utils.GenerateMock()
 
 	expectedRows := [][]driver.Value{
-		{"item1"},
-		{"item2"},
+		{"1", "item1"},
+		{"2", "item2"},
 	}
 	mock.ExpectSelect(expectedRows)
 	todoList, err := models.ToDoSelectAll(mock.DB())

@@ -4,10 +4,10 @@ import (
 	"database/sql"
 	"database/sql/driver"
 
+	"github.com/DATA-DOG/go-sqlmock"
+
 	"git.todo-app.com/ToDoReactApp/models"
 	repo "git.todo-app.com/ToDoReactApp/repository"
-
-	"github.com/DATA-DOG/go-sqlmock"
 
 	"fmt"
 	"regexp"
@@ -30,7 +30,7 @@ func (m *Mock) ExpectInsertToDoItem(value string) {
 }
 
 func (m *Mock) ExpectSelect(expectedRows [][]driver.Value) {
-	columns := []string{"item"}
+	columns := []string{"id", "item"}
 	rows := sqlmock.NewRows(columns)
 
 	for _, value := range expectedRows {

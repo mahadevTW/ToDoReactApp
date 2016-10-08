@@ -12,7 +12,7 @@ type ToDo struct {
 
 const (
 	InsertQuery = `INSERT INTO to_do_list VALUES (nextval('todo_sequence'),$1)`
-	SelectQuery = `SELECT text FROM to_do_list`
+	SelectQuery = `SELECT id, text FROM to_do_list`
 )
 
 func ToDoInsert(value string, db *sql.DB) (err error) {
@@ -32,8 +32,9 @@ func ToDoSelectAll(db *sql.DB) ([]ToDo, error) {
 
 	defer rows.Close()
 	var todoElement string
+	var todoId int
 	for rows.Next() {
-		err := rows.Scan(&todoElement)
+		err := rows.Scan(&todoId, &todoElement)
 		if err != nil {
 			fmt.Print("Skipping this row")
 		}
