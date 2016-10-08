@@ -9,6 +9,7 @@ import (
 	"github.com/gorilla/mux"
 
 	"git.todo-app.com/ToDoReactApp/handlers"
+	repo "git.todo-app.com/ToDoReactApp/repository"
 	_ "github.com/lib/pq"
 )
 
@@ -23,10 +24,14 @@ func main() {
 	defer db.Close()
 	if err != nil {
 	}
-	ToDoHandler := handlers.AddToDo(db)
+	todoRepo := &repo.ToDo{}
+	AddToDoHandler := handlers.AddToDo(db)
+	DeleteToDoHandler := handlers.DeleteToDoHandler(db, todoRepo)
+
 	r.HandleFunc("/alive", handlers.MeAliveMethod)
 	r.HandleFunc("/todos", handlers.SelectToDos(db)).Methods("GET")
-	r.HandleFunc("/todo", ToDoHandler).Methods("POST")
+	r.HandleFunc("/todo", AddToDoHandler).Methods("POST")
+	r.HandleFunc("/todo", DeleteToDoHandler).Methods("DELET")
 	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./out/build/")))
 	log.Println("Server started: http://localhost:" + port)
 	http.Handle("/", r)
