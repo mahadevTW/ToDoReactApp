@@ -5,10 +5,10 @@ var ToDoList = React.createClass({
     render: function () {
         let toDoElements = this.props.todoelements;
         let elementList = toDoElements.map((element)=>{
-            return <ToDoElement text={element}/>
+            return <ToDoElement todo_id={element.id} text={element.item}/>
             });
         return (
-            <div>
+            <div ref="list">
             {elementList}</div>
         );
     }

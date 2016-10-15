@@ -26,7 +26,7 @@ var ToDoApp = React.createClass({
     },
     onFetchList: function (result) {
         if(result.action == "fetch") {
-            let todosFlattened = result.data.body.map(x=>x.Item)
+            let todosFlattened = result.data.body.map(x=>({item:x.Item, id:x.Id}))
             this.list = this.list.concat(todosFlattened)
             this.setState({
                 todoelements: this.list

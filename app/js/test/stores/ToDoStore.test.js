@@ -30,11 +30,15 @@ describe("ToDoStore", function(){
   })
 
   it("fetches the list of todos", function(done){
+    let expectedData=[
+      {Item:'Item1', Id:1},
+      {Item:'Item2', Id:2}]
     nock('http://localhost/')
         .get('/todos')
-        .reply(200,{Item:'Hello'})
+        .reply(200,expectedData)
     ToDoStore.onFetchList();
-    sinon.stub(ToDoStore,"trigger",function(){
+    sinon.stub(ToDoStore,"trigger",function(trigger){
+      expect(trigger.data.body).to.deep.equal(expectedData)
       ToDoStore.trigger.restore();
       done();
     });

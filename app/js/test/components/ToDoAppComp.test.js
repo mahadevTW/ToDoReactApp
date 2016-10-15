@@ -20,15 +20,19 @@ describe('ToDoComp', function() {
             let scope = nock('http://localhost/')
                 .get('/todos')
                 .reply(200,[
-                    {Item:'item1'},
-                    {Item:'item2'},
+                    {Item:'item1', Id:1},
+                    {Item:'item2', Id:2},
                 ])
+            var component = ReactTestUtils.renderIntoDocument(<ToDoComponent/>);
 
-            var component = ReactTestUtils.renderIntoDocument(<ToDoComponent/>);            
             setTimeout(function(){
                 var comps = ReactTestUtils.scryRenderedDOMComponentsWithClass(component,'textElementStyle');
-                
                 expect(comps.length).to.be.equal(3)
+                expect(comps[1].props.children).to.equal("item1")
+                expect(comps[2].props.children).to.equal("item2")
+                expect(comps[1].props.id).to.equal(1)
+                expect(comps[2].props.id).to.equal(2)
+
                 done();
             }, 200);
         });
