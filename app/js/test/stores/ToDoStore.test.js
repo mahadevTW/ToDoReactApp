@@ -43,4 +43,40 @@ describe("ToDoStore", function(){
       done();
     });
   });
+
+  it("deletes todo given the id", function(done){
+    nock('http://localhost/')
+        .delete('/todo',{
+          'Id':1,
+        })
+        .reply(200,"Success")
+    ToDoStore.onDeleteItem(1);
+    let expectedTriggerData ={
+      action: 'deleteItem',
+      data: 1,
+    } 
+    sinon.stub(ToDoStore,"trigger",function(data){
+      expect(data).to.deep.equal(expectedTriggerData)
+      ToDoStore.trigger.restore();
+      done();
+    });
+  });
+
+  it("delete todo given the id fails", function(done){
+    nock('http://localhost/')
+        .delete('/todo',{
+          'Id':1,
+        })
+        .reply(500,"Failed");
+    ToDoStore.onDeleteItem(1);
+    let expectedTriggerData ={
+      action: 'deleteFailed',
+      data: 1,
+    }
+    sinon.stub(ToDoStore,"trigger",function(data){
+      expect(data).to.deep.equal(expectedTriggerData)
+      ToDoStore.trigger.restore();
+      done();
+    });
+  })
 });

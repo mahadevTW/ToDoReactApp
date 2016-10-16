@@ -26,6 +26,19 @@ var ToDoStore = Reflux.createStore({
             data:data,
         })
     },
+    onDeleteItem: function(id){
+        request
+            .delete('/todo')
+            .send({"Id":id})
+            .end(function(err,res){
+                if(err != null){
+                    ToDoStore.publish("deleteFailed", id)
+                }
+                else{
+                    ToDoStore.publish("deleteItem", id)
+                }
+            })
+    },
 
 });
 
