@@ -31,7 +31,7 @@ func main() {
 	r.HandleFunc("/alive", handlers.MeAliveMethod)
 	r.HandleFunc("/todos", handlers.SelectToDos(db)).Methods("GET")
 	r.HandleFunc("/todo", AddToDoHandler).Methods("POST")
-	r.HandleFunc("/todo", DeleteToDoHandler).Methods("DELET")
+	r.HandleFunc("/todo", DeleteToDoHandler).Methods("DELETE")
 	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./out/build/")))
 	log.Println("Server started: http://localhost:" + port)
 	http.Handle("/", r)
