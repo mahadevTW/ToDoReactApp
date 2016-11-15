@@ -11,14 +11,8 @@ type ToDo struct {
 }
 
 const (
-	InsertQuery = `INSERT INTO to_do_list VALUES (nextval('todo_sequence'),$1)`
 	SelectQuery = `SELECT id, text FROM to_do_list`
 )
-
-func ToDoInsert(value string, db *sql.DB) (err error) {
-	_, err = db.Exec(InsertQuery, value)
-	return
-}
 
 func ToDoSelectAll(db *sql.DB) ([]ToDo, error) {
 

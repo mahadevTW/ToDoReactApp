@@ -23,7 +23,7 @@ func MeAliveMethod(w http.ResponseWriter, r *http.Request) {
 	w.Write(byteContents)
 }
 
-func AddToDo(db *sql.DB) http.HandlerFunc {
+func AddToDo(db *sql.DB, todoRepo repo.ToDoRepository) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		body, err := ioutil.ReadAll(r.Body)
 		if err != nil {
@@ -36,7 +36,7 @@ func AddToDo(db *sql.DB) http.HandlerFunc {
 		if err != nil {
 			return
 		}
-		models.ToDoInsert(requestBody.Item, db)
+		todoRepo.Insert(requestBody.Item, db)
 		w.Write([]byte("Success"))
 	}
 }

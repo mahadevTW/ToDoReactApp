@@ -26,20 +26,19 @@ func TestSuccessfulResponseFromStatusCheckHandler(t *testing.T) {
 
 func TestInsertToDoElement(t *testing.T) {
 	const requestData = `{"Item": "hello"}`
-
 	mock := utils.GenerateMock()
-	mock.ExpectInsertToDoItem("hello")
+	fakeTodoRepository := &utils.MockToDoRepository{}
+	fakeTodoRepository.On("Insert", "hello", mock.DB()).Return(nil)
 
 	r, _ := http.NewRequest("GET", "", bytes.NewBufferString(requestData))
 	w := httptest.NewRecorder()
-	handler := AddToDo(mock.DB())
+	handler := AddToDo(mock.DB(), fakeTodoRepository)
 	handler(w, r)
 
 	response := w.Body.Bytes()
 	assert.Equal(t, "Success", string(response))
 
-	err := mock.VerifyExpectations()
-	assert.NoError(t, err, "Queries were not called")
+	fakeTodoRepository.AssertExpectations(t)
 }
 
 func TestSelectToDoElements(t *testing.T) {
