@@ -6,7 +6,6 @@ import (
 
 	"github.com/DATA-DOG/go-sqlmock"
 
-	"git.todo-app.com/ToDoReactApp/models"
 	repo "git.todo-app.com/ToDoReactApp/repository"
 
 	"fmt"
@@ -36,10 +35,10 @@ func (m *Mock) ExpectSelect(expectedRows [][]driver.Value) {
 	for _, value := range expectedRows {
 		rows.AddRow(value...)
 	}
-	m.mock.ExpectQuery(sanitize(models.SelectQuery)).WillReturnRows(rows)
+	m.mock.ExpectQuery(sanitize(repo.SelectQuery)).WillReturnRows(rows)
 }
 func (m *Mock) ExpectSelectFails(err error) {
-	m.mock.ExpectQuery(sanitize(models.SelectQuery)).WillReturnError(err)
+	m.mock.ExpectQuery(sanitize(repo.SelectQuery)).WillReturnError(err)
 }
 func (m *Mock) ExpectExecFails(query string, err error) {
 	m.mock.ExpectExec(sanitize(query)).WillReturnError(err)

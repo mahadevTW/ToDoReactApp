@@ -1,6 +1,7 @@
 package repository_test
 
 import (
+	"database/sql/driver"
 	"errors"
 	"testing"
 
@@ -62,6 +63,39 @@ func TestInsertToDoFails(t *testing.T) {
 	err := todoRepo.Insert(newToDoItem, mock.DB())
 
 	assert.Equal(t, "bombed", err.Error(), "Unexpected Error thrown while trying to insert a new todo")
+	err = mock.VerifyExpectations()
+	assert.NoError(t, err, "Queries were not called")
+}
+
+func TestSuccessfulSelectToDos(t *testing.T) {
+	mock := utils.GenerateMock()
+
+	expectedRows := [][]driver.Value{
+		{"1", "item1"},
+		{"2", "item2"},
+	}
+	mock.ExpectSelect(expectedRows)
+
+	todoRepo := repo.ToDo{}
+	todoList, err := todoRepo.Select(mock.DB())
+
+	assert.NoError(t, err, "Queries were not called")
+	assert.Equal(t, 2, len(todoList), "Should have fetched two todo items")
+	err = mock.VerifyExpectations()
+	assert.NoError(t, err, "Queries were not called")
+}
+
+func TestSelectToDosFailure(t *testing.T) {
+	mock := utils.GenerateMock()
+
+	mock.ExpectSelectFails(errors.New("bombed"))
+
+	todoRepo := repo.ToDo{}
+	todoList, err := todoRepo.Select(mock.DB())
+
+	assert.NotNil(t, err, "Queries were not called")
+	assert.Nil(t, todoList, "Returned ToDo list should have been empty")
+
 	err = mock.VerifyExpectations()
 	assert.NoError(t, err, "Queries were not called")
 }

@@ -8,7 +8,6 @@ import (
 
 	"fmt"
 
-	"git.todo-app.com/ToDoReactApp/models"
 	repo "git.todo-app.com/ToDoReactApp/repository"
 )
 
@@ -41,9 +40,9 @@ func AddToDo(db *sql.DB, todoRepo repo.ToDoRepository) http.HandlerFunc {
 	}
 }
 
-func SelectToDos(db *sql.DB) http.HandlerFunc {
+func SelectToDos(db *sql.DB, todoRepo repo.ToDoRepository) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		todos, _ := models.ToDoSelectAll(db)
+		todos, _ := todoRepo.Select(db)
 		todosJSON, err := json.Marshal(todos)
 		if err != nil {
 			fmt.Print("Error in json marshalling")

@@ -7,7 +7,6 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"database/sql/driver"
 	"encoding/json"
 
 	"git.todo-app.com/ToDoReactApp/models"
@@ -44,15 +43,18 @@ func TestInsertToDoElement(t *testing.T) {
 func TestSelectToDoElements(t *testing.T) {
 	mock := utils.GenerateMock()
 
-	expectedRows := [][]driver.Value{
-		{"1", "item1"},
-		{"2", "item2"},
-	}
-	mock.ExpectSelect(expectedRows)
+	item1 := models.ToDo{Id:1, Item:"item1"}
+	item2 := models.ToDo{Id:2, Item:"item2"}
+
+	expectedItems := []models.ToDo{item1,item2}
 
 	r, _ := http.NewRequest("GET", "", nil)
 	w := httptest.NewRecorder()
-	handler := SelectToDos(mock.DB())
+
+	fakeTodoRepository := &utils.MockToDoRepository{}
+	fakeTodoRepository.On("Select", mock.DB()).Return(expectedItems ,nil)
+
+	handler := SelectToDos(mock.DB(), fakeTodoRepository)
 	handler(w, r)
 
 	response := w.Body.Bytes()
