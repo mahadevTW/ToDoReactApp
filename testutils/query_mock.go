@@ -24,8 +24,13 @@ func GenerateMock() *Mock {
 	}
 	return &Mock{mock: mock, db: db}
 }
-func (m *Mock) ExpectInsertToDoItem(value string) {
-	m.mock.ExpectExec(`INSERT INTO to_do_list`).WithArgs(value).WillReturnResult(sqlmock.NewResult(1, 1))
+func (m *Mock) ExpectInsertToDoItem(todoId int, todoItem string) {
+	columns := []string{"id"}
+	rows := sqlmock.NewRows(columns)
+
+	rows.AddRow(todoId)
+
+	m.mock.ExpectQuery(sanitize(repo.InsertQuery)).WithArgs(todoItem).WillReturnRows(rows)
 }
 
 func (m *Mock) ExpectSelect(expectedRows [][]driver.Value) {
@@ -42,6 +47,9 @@ func (m *Mock) ExpectSelectFails(err error) {
 }
 func (m *Mock) ExpectExecFails(query string, err error) {
 	m.mock.ExpectExec(sanitize(query)).WillReturnError(err)
+}
+func (m *Mock) ExpectQueryFails(query string, err error) {
+	m.mock.ExpectQuery(sanitize(query)).WillReturnError(err)
 }
 func (m *Mock) ExpectDeleteSuccess(id int) {
 	m.mock.ExpectExec(sanitize(repo.DeleteQuery)).WillReturnResult(sqlmock.NewResult(1, 1))

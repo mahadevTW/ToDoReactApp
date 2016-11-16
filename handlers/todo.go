@@ -33,10 +33,15 @@ func AddToDo(db *sql.DB, todoRepo repo.ToDoRepository) http.HandlerFunc {
 		requestBody := &ToDoJSON{}
 		err = json.Unmarshal(body, requestBody)
 		if err != nil {
+
 			return
 		}
-		todoRepo.Insert(requestBody.Item, db)
-		w.Write([]byte("Success"))
+		id, err := todoRepo.Insert(requestBody.Item, db)
+		if err != nil{
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte("Something went wrong"))
+		}
+		w.Write([]byte(id))
 	}
 }
 

@@ -27,7 +27,7 @@ func TestInsertToDoElement(t *testing.T) {
 	const requestData = `{"Item": "hello"}`
 	mock := utils.GenerateMock()
 	fakeTodoRepository := &utils.MockToDoRepository{}
-	fakeTodoRepository.On("Insert", "hello", mock.DB()).Return(nil)
+	fakeTodoRepository.On("Insert", "hello", mock.DB()).Return("1", nil)
 
 	r, _ := http.NewRequest("GET", "", bytes.NewBufferString(requestData))
 	w := httptest.NewRecorder()
@@ -35,7 +35,25 @@ func TestInsertToDoElement(t *testing.T) {
 	handler(w, r)
 
 	response := w.Body.Bytes()
-	assert.Equal(t, "Success", string(response))
+	assert.Equal(t, "1", string(response))
+
+	fakeTodoRepository.AssertExpectations(t)
+}
+
+func TestInsertToDoElementFails(t *testing.T) {
+	const requestData = `{"Item": "hello"}`
+	mock := utils.GenerateMock()
+	fakeTodoRepository := &utils.MockToDoRepository{}
+	fakeTodoRepository.On("Insert", "hello", mock.DB()).Return("", errors.New("Something went wrong"))
+
+	r, _ := http.NewRequest("GET", "", bytes.NewBufferString(requestData))
+	w := httptest.NewRecorder()
+	handler := AddToDo(mock.DB(), fakeTodoRepository)
+	handler(w, r)
+
+	response := w.Body.Bytes()
+	assert.Equal(t, "Something went wrong", string(response))
+	assert.Equal(t, http.StatusInternalServerError, w.Code)
 
 	fakeTodoRepository.AssertExpectations(t)
 }

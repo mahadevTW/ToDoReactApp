@@ -16,9 +16,9 @@ func (m *MockToDoRepository) Delete(db *sql.DB, id int) error {
 	return args.Error(0)
 }
 
-func (m *MockToDoRepository) Insert(value string, db *sql.DB) error {
+func (m *MockToDoRepository) Insert(value string, db *sql.DB) (string,error) {
 	args := m.Called(value, db)
-	return args.Error(0)
+	return args.String(0),args.Error(1)
 }
 
 func (m *MockToDoRepository) Select(db *sql.DB) ([]models.ToDo, error) {

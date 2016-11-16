@@ -41,13 +41,13 @@ func TestToDoDeleteFailure(t *testing.T) {
 func TestSuccessfulInsertToDo(t *testing.T) {
 	todoItem := "Shopping"
 	mock := utils.GenerateMock()
-	mock.ExpectInsertToDoItem(todoItem)
+	mock.ExpectInsertToDoItem(1, todoItem)
 	todoRepo := repo.ToDo{}
 
-	err := todoRepo.Insert(todoItem, mock.DB())
-	// err := ToDoInsert(todoItem, mock.DB())
+	id, err := todoRepo.Insert(todoItem, mock.DB())
 
 	assert.NoError(t, err, "Unexpected Error thrown while trying to insert a new todo")
+	assert.Equal(t, "1", id, "Unexpected Error thrown while trying to insert a new todo")
 	err = mock.VerifyExpectations()
 	assert.NoError(t, err, "Queries were not called")
 }
@@ -56,11 +56,11 @@ func TestInsertToDoFails(t *testing.T) {
 	mock := utils.GenerateMock()
 	newToDoItem := "Flour"
 
-	mock.ExpectExecFails(repo.InsertQuery, errors.New("bombed"))
+	mock.ExpectQueryFails(repo.InsertQuery, errors.New("bombed"))
 
 	todoRepo := repo.ToDo{}
 
-	err := todoRepo.Insert(newToDoItem, mock.DB())
+	_,err := todoRepo.Insert(newToDoItem, mock.DB())
 
 	assert.Equal(t, "bombed", err.Error(), "Unexpected Error thrown while trying to insert a new todo")
 	err = mock.VerifyExpectations()
