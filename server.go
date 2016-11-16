@@ -25,11 +25,11 @@ func main() {
 	if err != nil {
 	}
 	todoRepo := &repo.ToDo{}
-	AddToDoHandler := handlers.AddToDo(db)
+	AddToDoHandler := handlers.AddToDo(db, todoRepo)
 	DeleteToDoHandler := handlers.DeleteToDoHandler(db, todoRepo)
 
 	r.HandleFunc("/alive", handlers.MeAliveMethod)
-	r.HandleFunc("/todos", handlers.SelectToDos(db)).Methods("GET")
+	r.HandleFunc("/todos", handlers.SelectToDos(db, todoRepo)).Methods("GET")
 	r.HandleFunc("/todo", AddToDoHandler).Methods("POST")
 	r.HandleFunc("/todo", DeleteToDoHandler).Methods("DELETE")
 	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./out/build/")))
