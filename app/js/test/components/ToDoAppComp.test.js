@@ -28,8 +28,8 @@ describe('ToDoComp', function() {
             setTimeout(function(){
                 var comps = ReactTestUtils.scryRenderedDOMComponentsWithClass(component,'textElementStyle');
                 expect(comps.length).to.be.equal(3)
-                expect(comps[1].props.children).to.equal("item1")
-                expect(comps[2].props.children).to.equal("item2")
+                expect(comps[1].props.children[0].props.children).to.equal("item1")
+                expect(comps[2].props.children[0].props.children).to.equal("item2")
                 expect(comps[1].props.id).to.equal(1)
                 expect(comps[2].props.id).to.equal(2)
 
@@ -63,9 +63,9 @@ describe('ToDoComp', function() {
                 var comps = ReactTestUtils.scryRenderedDOMComponentsWithClass(component,'textElementStyle');
                 expect(comps.length).to.be.equal(4)
 
-                expect(comps[1].props.children).to.equal("item1")
-                expect(comps[2].props.children).to.equal("item2")
-                expect(comps[3].props.children).to.equal("Hello")
+                expect(comps[1].props.children[0].props.children).to.equal("item1")
+                expect(comps[2].props.children[0].props.children).to.equal("item2")
+                expect(comps[3].props.children[0].props.children).to.equal("Hello")
                 expect(comps[1].props.id).to.equal(1)
                 expect(comps[2].props.id).to.equal(2)
                 expect(comps[3].props.id).to.equal(3)
@@ -73,5 +73,6 @@ describe('ToDoComp', function() {
                 done();
             }, 200);
 
-        })
+        });
+
 });

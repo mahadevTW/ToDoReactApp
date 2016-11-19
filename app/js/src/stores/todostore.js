@@ -6,6 +6,7 @@ var ToDoStore = Reflux.createStore({
     listenables: [ToDoActions],
 
     onUpdateList: function(payload){
+
         request
             .post('/todo')
             .send({"Item":payload})
@@ -25,10 +26,12 @@ var ToDoStore = Reflux.createStore({
             });
     },
     publish: function(action, data){
+
         this.trigger({
             action:action,
             data:data,
         })
+
     },
     onDeleteItem: function(id){
         request
