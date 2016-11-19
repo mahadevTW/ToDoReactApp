@@ -10,7 +10,11 @@ var ToDoStore = Reflux.createStore({
             .post('/todo')
             .send({"Item":payload})
             .end(function(err,res){
-                ToDoStore.publish("triggered",payload);
+                let data = {
+                    Item: payload,
+                    Id: res.body
+                }
+                ToDoStore.publish("triggered",data);
             })
     },
     onFetchList: function(){

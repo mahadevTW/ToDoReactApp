@@ -37,14 +37,41 @@ describe('ToDoComp', function() {
             }, 200);
         });
 
-        xit('should update List when notified', function(){
+        it('should update List when notified', function(done){
+
+            let scope = nock('http://localhost/')
+                .get('/todos')
+                .reply(200,[
+                    {Item:'item1', Id:1},
+                    {Item:'item2', Id:2},
+                ])
+
+            let scope1=nock('http://localhost/')
+                .post('/todo',{
+                    "Item": "Hello"
+                })
+                .reply(200,3);
+
+;
             var component = ReactTestUtils.renderIntoDocument(<ToDoComponent/>);
             let data={
                 data:"Hello",
                 action:"triggered"
             }
             ToDoStore.onUpdateList("Hello");
-            expect(component.state.text).to.be.equal("Hello");
+            setTimeout(function(){
+                var comps = ReactTestUtils.scryRenderedDOMComponentsWithClass(component,'textElementStyle');
+                expect(comps.length).to.be.equal(4)
+
+                expect(comps[1].props.children).to.equal("item1")
+                expect(comps[2].props.children).to.equal("item2")
+                expect(comps[3].props.children).to.equal("Hello")
+                expect(comps[1].props.id).to.equal(1)
+                expect(comps[2].props.id).to.equal(2)
+                expect(comps[3].props.id).to.equal(3)
+
+                done();
+            }, 200);
 
         })
 });

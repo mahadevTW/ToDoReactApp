@@ -18,7 +18,8 @@ var ToDoApp = React.createClass({
     },
     onUpdateList: function (result) {
         if(result.action == "triggered") {
-            this.list.unshift(result.data);
+            let todosFlattened = [{item:result.data.Item, id: result.data.Id}]
+            this.list = this.list.concat(todosFlattened);
             this.setState({
                 todoelements: this.list
             });
