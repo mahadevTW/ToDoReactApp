@@ -1,5 +1,5 @@
 var React = require('react');
-var ToDoActions = require('./../actions/Todoactions');
+var ToDoActions = require('./../actions/todoactions');
 var ToDoInput = React.createClass({
     getInitialState: function(){
         return {text: ''};

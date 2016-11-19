@@ -15,6 +15,7 @@ var ToDoApp = React.createClass({
         ToDoStore.onFetchList();
         listener.listenTo(ToDoStore, this.onUpdateList);
         listener.listenTo(ToDoStore, this.onFetchList);
+        listener.listenTo(ToDoStore, this.onDeleteItem);
     },
     onUpdateList: function (result) {
         if(result.action == "triggered") {
@@ -32,6 +33,16 @@ var ToDoApp = React.createClass({
             this.setState({
                 todoelements: this.list
             });
+        }
+    },
+    onDeleteItem:function(result){
+        if(result.action == "deleteItem"){
+
+            this.list = this.list.filter(x=>x.id != result.data)
+            this.setState({
+                todoelements: this.list
+            })
+
         }
     },
     render: function () {

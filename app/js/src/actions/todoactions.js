@@ -2,7 +2,7 @@ var Reflux = require('reflux');
 var ToDoActions = Reflux.createActions([
    "updateList",
    "fetchList",
-   "deleteItem"
+   "deleteItem",
 ]);
 
 module.exports = ToDoActions;

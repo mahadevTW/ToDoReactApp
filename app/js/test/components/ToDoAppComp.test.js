@@ -37,22 +37,19 @@ describe('ToDoComp', function() {
             }, 200);
         });
 
-        it('should update List when notified', function(done){
+        it('should update List when item is added', function(done){
 
             let scope = nock('http://localhost/')
                 .get('/todos')
                 .reply(200,[
                     {Item:'item1', Id:1},
                     {Item:'item2', Id:2},
-                ])
-
+                ]);
             let scope1=nock('http://localhost/')
                 .post('/todo',{
                     "Item": "Hello"
                 })
                 .reply(200,3);
-
-;
             var component = ReactTestUtils.renderIntoDocument(<ToDoComponent/>);
             let data={
                 data:"Hello",
@@ -69,6 +66,35 @@ describe('ToDoComp', function() {
                 expect(comps[1].props.id).to.equal(1)
                 expect(comps[2].props.id).to.equal(2)
                 expect(comps[3].props.id).to.equal(3)
+
+                done();
+            }, 200);
+
+        });
+
+        it('should update List when item is removed', function(done){
+
+            let scope = nock('http://localhost/')
+                .get('/todos')
+                .reply(200,[
+                    {Item:'item1', Id:1},
+                    {Item:'item2', Id:2},
+                ]);
+            let scope1=nock('http://localhost/')
+                .delete('/todo',{
+                    "Id": 1
+                })
+                .reply(200,"Success");
+            var component = ReactTestUtils.renderIntoDocument(<ToDoComponent/>);
+            
+            ToDoStore.onDeleteItem(1);
+            
+            setTimeout(function(){
+                var comps = ReactTestUtils.scryRenderedDOMComponentsWithClass(component,'textElementStyle');
+                expect(comps.length).to.be.equal(2)
+
+                expect(comps[1].props.children[0].props.children).to.equal("item2")
+                expect(comps[1].props.id).to.equal(2)
 
                 done();
             }, 200);

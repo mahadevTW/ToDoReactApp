@@ -1,5 +1,5 @@
 var Reflux = require('reflux');
-var ToDoActions = require('./../actions/Todoactions');
+var ToDoActions = require('./../actions/todoactions');
 var request = require('superagent');
 
 var ToDoStore = Reflux.createStore({
