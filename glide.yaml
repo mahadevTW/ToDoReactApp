@@ -4,3 +4,4 @@ import:
 - package: github.com/stretchr/testify
 - package: github.com/DATA-DOG/go-sqlmock
 - package: github.com/jmoiron/sqlx
+- package: https://github.com/gorilla/csrf
