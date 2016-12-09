@@ -46,6 +46,14 @@ var ToDoStore = Reflux.createStore({
                 }
             })
     },
+    onFetchCSRF: function () {
+        request
+            .get('/csrfToken')
+            .end(function(err,res){
+                ToDoStore.publish("csrfToken",res.body.CSRFToken)
+            })
+    },
+
 
 });
 

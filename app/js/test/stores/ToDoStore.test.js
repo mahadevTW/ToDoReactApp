@@ -92,4 +92,24 @@ describe("ToDoStore", function(){
       });
     });
   });
+
+  describe("CSRF Token", function () {
+    it("should be fetched successfully", function (done) {
+      nock("http://localhost/")
+          .get("/csrfToken")
+          .reply(200, {CSRFToken:"XXXYYYYZZZZ"})
+      let expectedTriggerData = {
+        action: 'csrfToken',
+        data:'XXXYYYYZZZZ',
+      }
+      ToDoStore.onFetchCSRF()
+
+
+      sinon.stub(ToDoStore,"trigger", function(data){
+        expect(data).to.deep.equal(expectedTriggerData);
+        ToDoStore.trigger.restore();
+        done();
+      })
+    })
+  })
 });
