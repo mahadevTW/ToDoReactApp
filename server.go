@@ -32,6 +32,7 @@ func main() {
 	r.HandleFunc("/todos", handlers.SelectToDos(db, todoRepo)).Methods("GET")
 	r.HandleFunc("/todo", AddToDoHandler).Methods("POST")
 	r.HandleFunc("/todo", DeleteToDoHandler).Methods("DELETE")
+	r.HandleFunc("/csrfToken", handlers.CSRFHandler()).Methods("GET")
 	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./out/build/")))
 	log.Println("Server started: http://localhost:" + port)
 	http.Handle("/", r)
