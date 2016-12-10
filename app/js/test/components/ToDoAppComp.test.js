@@ -12,6 +12,7 @@ describe('ToDoComp', function() {
     let csrfNock, fetchTodosNock;
 
     beforeEach(function(){
+
         csrfNock = nock('http://localhost/')
             .get('/csrfToken')
             .reply(200, {CSRFToken:'XXXXXYYYYY'});
@@ -24,6 +25,10 @@ describe('ToDoComp', function() {
             ])
 
 
+    });
+
+    afterEach(function(){
+        nock.cleanAll();
     })
 
     it('should render TextDisplay and ToDoInput', function () {
