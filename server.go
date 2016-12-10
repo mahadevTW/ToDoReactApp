@@ -11,6 +11,7 @@ import (
 	"git.todo-app.com/ToDoReactApp/handlers"
 	repo "git.todo-app.com/ToDoReactApp/repository"
 	_ "github.com/lib/pq"
+	"github.com/gorilla/csrf"
 )
 
 func main() {
@@ -28,6 +29,9 @@ func main() {
 	AddToDoHandler := handlers.AddToDo(db, todoRepo)
 	DeleteToDoHandler := handlers.DeleteToDoHandler(db, todoRepo)
 
+	CSRFProtector := csrf.Protect([]byte("32-byte-long-auth-key"))
+
+
 	r.HandleFunc("/alive", handlers.MeAliveMethod)
 	r.HandleFunc("/todos", handlers.SelectToDos(db, todoRepo)).Methods("GET")
 	r.HandleFunc("/todo", AddToDoHandler).Methods("POST")
@@ -35,6 +39,6 @@ func main() {
 	r.HandleFunc("/csrfToken", handlers.CSRFHandler()).Methods("GET")
 	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./out/build/")))
 	log.Println("Server started: http://localhost:" + port)
-	http.Handle("/", r)
+	http.Handle("/", CSRFProtector(r))
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }

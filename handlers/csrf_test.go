@@ -24,5 +24,8 @@ func TestCSRFHandleSuccess(t *testing.T) {
 	err := json.Unmarshal(w.Body.Bytes(), &csrfToken)
 
 	assert.NoError(t,err)
+	assert.Equal(t, http.StatusOK, w.Code)
+	assert.Equal(t,"application/json; charset=utf-8", w.Header().Get("Content-Type"))
 	assert.NotEmpty(t, csrfToken.CSRFToken)
+
 }

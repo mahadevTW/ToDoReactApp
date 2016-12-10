@@ -21,6 +21,7 @@ func CSRFHandler() http.HandlerFunc{
 			return
 		}
 
+		w.Header().Set("Content-Type","application/json; charset=utf-8")
 		w.Write(response)
 
 		return
