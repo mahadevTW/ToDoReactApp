@@ -6,9 +6,27 @@ var ToDoComponent = require("../../src/components/ToDoAppComp");
 var ToDoStore = require("../../src/stores/todostore");
 var sinon = require("sinon");
 var nock = require("nock");
+var config = require("../../src/config");
 
 describe('ToDoComp', function() {
-        it('should render TextDisplay and ToDoInput', function () {
+    let csrfNock, fetchTodosNock;
+
+    beforeEach(function(){
+        csrfNock = nock('http://localhost/')
+            .get('/csrfToken')
+            .reply(200, {CSRFToken:'XXXXXYYYYY'});
+
+        fetchTodosNock = nock('http://localhost/')
+            .get('/todos')
+            .reply(200,[
+                {Item:'item1', Id:1},
+                {Item:'item2', Id:2},
+            ])
+
+
+    })
+
+    it('should render TextDisplay and ToDoInput', function () {
             let renderer = ReactTestUtils.createRenderer();
             renderer.render(<ToDoComponent />);
             let component = renderer.getRenderOutput();
@@ -16,13 +34,9 @@ describe('ToDoComp', function() {
             expect(component.props.children[1].type.displayName).to.equal('ToDoList');
         });
 
-        it('should fetch ToDos', function (done) {
-            let scope = nock('http://localhost/')
-                .get('/todos')
-                .reply(200,[
-                    {Item:'item1', Id:1},
-                    {Item:'item2', Id:2},
-                ])
+    it('should fetch ToDos', function (done) {
+
+
             var component = ReactTestUtils.renderIntoDocument(<ToDoComponent/>);
 
             setTimeout(function(){
@@ -37,15 +51,9 @@ describe('ToDoComp', function() {
             }, 200);
         });
 
-        it('should update List when item is added', function(done){
+    it('should update List when item is added', function(done){
 
-            let scope = nock('http://localhost/')
-                .get('/todos')
-                .reply(200,[
-                    {Item:'item1', Id:1},
-                    {Item:'item2', Id:2},
-                ]);
-            let scope1=nock('http://localhost/')
+            let scope=nock('http://localhost/')
                 .post('/todo',{
                     "Item": "Hello"
                 })
@@ -72,14 +80,8 @@ describe('ToDoComp', function() {
 
         });
 
-        it('should update List when item is removed', function(done){
+    it('should update List when item is removed', function(done){
 
-            let scope = nock('http://localhost/')
-                .get('/todos')
-                .reply(200,[
-                    {Item:'item1', Id:1},
-                    {Item:'item2', Id:2},
-                ]);
             let scope1=nock('http://localhost/')
                 .delete('/todo',{
                     "Id": 1
@@ -91,14 +93,23 @@ describe('ToDoComp', function() {
             
             setTimeout(function(){
                 var comps = ReactTestUtils.scryRenderedDOMComponentsWithClass(component,'textElementStyle');
-                expect(comps.length).to.be.equal(2)
+                expect(comps.length).to.be.equal(2);
 
-                expect(comps[1].props.children[0].props.children).to.equal("item2")
-                expect(comps[1].props.id).to.equal(2)
+                expect(comps[1].props.children[0].props.children).to.equal("item2");
+                expect(comps[1].props.id).to.equal(2);
 
                 done();
             }, 200);
 
         });
+
+    it('should make csrf Fetch on load', function(done){
+            var component = ReactTestUtils.renderIntoDocument(<ToDoComponent/>);
+
+            setTimeout(function() {
+                expect(config.csrfToken).to.be.equal("XXXXXYYYYY");
+                done();
+            }, 200);
+        })
 
 });

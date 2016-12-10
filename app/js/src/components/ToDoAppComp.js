@@ -2,7 +2,9 @@ var React = require('react');
 var Reflux = require('reflux');
 var ToDoList= require('./ToDoList');
 var ToDoInput= require('./ToDoInput');
-var ToDoStore= require('./../stores/todostore');
+var ToDoActions= require('./../actions/todoactions');
+var ToDoStore = require('./../stores/todostore');
+var config = require('./../config');
 
 const listener = Reflux.ListenerMixin;
 var ToDoApp = React.createClass({
@@ -13,9 +15,11 @@ var ToDoApp = React.createClass({
     componentDidMount: function(){
         this.list=[];
         ToDoStore.onFetchList();
+        ToDoActions.fetchCSRF();
         listener.listenTo(ToDoStore, this.onUpdateList);
         listener.listenTo(ToDoStore, this.onFetchList);
         listener.listenTo(ToDoStore, this.onDeleteItem);
+        listener.listenTo(ToDoStore, this.onFetchCSRF);
     },
     onUpdateList: function (result) {
         if(result.action == "triggered") {
@@ -43,6 +47,11 @@ var ToDoApp = React.createClass({
                 todoelements: this.list
             })
 
+        }
+    },
+    onFetchCSRF: function(result){
+        if(result.action == "csrfToken"){
+            config.csrfToken = result.data
         }
     },
     render: function () {
